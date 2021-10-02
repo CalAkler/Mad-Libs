@@ -3,7 +3,7 @@ const Template = (props) => {
    <div className="template">
      <h3>{props.title}</h3>
      <h4>by {props.author}</h4>
-     <p>Mad-lib goes here</p>
+     <p>props.madLib</p>
    </div>
   )
 }
