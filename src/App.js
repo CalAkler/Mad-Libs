@@ -1,25 +1,44 @@
-import logo from './logo.svg';
 import './App.css';
+import Template from './Template';
+import FormInput from './FormInput';
+import { useEffect, useState } from 'react';
+
 
 function App() {
+  const [madLibForm, setMadLibForm] = useState([]);
+
+  useEffect(() => {
+    fetch(`http://madlibz.herokuapp.com/api/random?minlength=10&maxlength=15`)
+      .then(res => res.json())
+      .then(jsonRes => {
+        setMadLibForm(jsonRes.blanks);
+        console.log(jsonRes);
+      })
+  }, []);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>Mad-Libs!</h1>
+
+      {/* {
+        madLibForm.map((blank) => {
+          return (
+            <Form
+              
+            />
+          )
+        })
+      } */}
+
+
+      <form>
+        <ul>
+          <FormInput />
+        </ul>
+      </form>
     </div>
-  );
+    
+  )
 }
 
 export default App;
