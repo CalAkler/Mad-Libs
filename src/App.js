@@ -1,6 +1,6 @@
 import './App.css';
-import Template from './Template';
 import FormInput from './FormInput';
+import Template from './Template';
 import { useEffect, useState } from 'react';
 
 
@@ -8,9 +8,12 @@ function App() {
   const [madLibBlanks, setMadLibBlanks] = useState([]);
   const [madLibTemplate, setMadLibTemplate] = useState([]);
   const [userInput, setUserInput] = useState('');
+  const [wordList, setWordList] = useState([]);
+  const [author, setAuthor] = useState('');
+
 
   useEffect(() => {
-    fetch(`http://madlibz.herokuapp.com/api/random?minlength=10&maxlength=15`)
+    fetch(`http://madlibz.herokuapp.com/api/random?minlength=10&maxlength=14`)
       .then(res => res.json())
       .then(jsonRes => {
         setMadLibBlanks(jsonRes.blanks);
@@ -24,10 +27,22 @@ function App() {
     
     // firebase code if time
 
-    const userRes = [];
+    setWordList([...wordList, userInput])
+    // console.log(wordList);
 
-    userRes.push(userInput)
+
+    const userRes = [];
+    userRes.push(wordList)
     console.log(userRes);
+
+
+
+    return (
+      <Template 
+        
+      />
+    )
+
   }
 
   const handleChange = e => {
@@ -51,7 +66,10 @@ function App() {
               )
             })
           }
+          <label htmlFor="userName">Pseudonym <span>How would you like to be credited?</span></label>
+          <input type="text" id="userName" />
         </ul>
+        
         {/* disable button until all fields filled */}
         <button>Get Mad-Lib</button>
       </form>

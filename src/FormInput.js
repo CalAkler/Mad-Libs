@@ -8,7 +8,7 @@ const FormInput = (props) => {
         id={`${props.prompt}UserInput`}
         onChange={props.change}
         value={props.value} 
-        required
+        // required
       />
     </li>
   )

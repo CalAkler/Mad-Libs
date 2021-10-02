@@ -1,8 +1,8 @@
 const Template = (props) => {
   return (
-   <div>
+   <div className="template">
      <h3>{props.title}</h3>
-     <p>by ____</p>
+     <h4>by {props.author}</h4>
      <p>Mad-lib goes here</p>
    </div>
   )
