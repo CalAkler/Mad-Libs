@@ -4,7 +4,7 @@
   // [formSubmitted, setFormSubmitted] 
   // inputs
   
-// create Form child component that includes text inputs asking for:
+// create FormInput child component that includes text inputs asking for:
   // adjective, noun, verb, name, city, etc. which will be used to populate story Template
     // store values as props on submit
   // "Get Mad-Lib" submit button

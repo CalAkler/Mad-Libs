@@ -5,39 +5,57 @@ import { useEffect, useState } from 'react';
 
 
 function App() {
-  const [madLibForm, setMadLibForm] = useState([]);
+  const [madLibBlanks, setMadLibBlanks] = useState([]);
+  const [madLibTemplate, setMadLibTemplate] = useState([]);
+  const [userInput, setUserInput] = useState('');
 
   useEffect(() => {
     fetch(`http://madlibz.herokuapp.com/api/random?minlength=10&maxlength=15`)
       .then(res => res.json())
       .then(jsonRes => {
-        setMadLibForm(jsonRes.blanks);
+        setMadLibBlanks(jsonRes.blanks);
+        setMadLibTemplate(jsonRes.value);
         console.log(jsonRes);
       })
   }, []);
 
+  const handleSubmit = e => {
+    e.preventDefault();
+    
+    // firebase code if time
+
+    const userRes = [];
+
+    userRes.push(userInput)
+    console.log(userRes);
+  }
+
+  const handleChange = e => {
+    setUserInput(e.target.value);
+  }
+
   return (
     <div className="App">
       <h1>Mad-Libs!</h1>
-
-      {/* {
-        madLibForm.map((blank) => {
-          return (
-            <Form
-              
-            />
-          )
-        })
-      } */}
-
-
-      <form>
+      <form onSubmit={handleSubmit}>
         <ul>
-          <FormInput />
+          {
+            madLibBlanks.map((blank, index) => {
+              return (
+                <FormInput
+                  key={index}
+                  prompt={blank}
+                  change={handleChange}
+                  // value={userInput}
+                />
+              )
+            })
+          }
         </ul>
+        {/* disable button until all fields filled */}
+        <button>Get Mad-Lib</button>
       </form>
     </div>
-    
   )
 }
 

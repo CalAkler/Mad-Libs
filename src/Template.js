@@ -1,7 +1,7 @@
-const Template = () => {
+const Template = (props) => {
   return (
    <div>
-     <h3>Title?</h3>
+     <h3>{props.title}</h3>
      <p>by ____</p>
      <p>Mad-lib goes here</p>
    </div>
