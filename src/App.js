@@ -8,6 +8,7 @@ function App() {
   const [madLibTemplate, setMadLibTemplate] = useState([]);
   const [madLibTitle, setMadLibTitle] = useState('');
   const [madLibResult, setMadLibResult] = useState('');
+  const [author, setAuthor] = useState('');
   const [inputList, setInputList] = useState([{ 
     prompt: "", 
     value: "" 
@@ -41,6 +42,7 @@ function App() {
 
     const madLibString = combinedArray.join('');
     setMadLibResult(madLibString);
+
   }
 
   
@@ -49,6 +51,10 @@ function App() {
     const updatedInputList = [...inputList];
     updatedInputList[index].value = e.target.value;
     setInputList(updatedInputList);
+  }
+
+  const handleAuthor = (e) => {
+    setAuthor(e.target.value)
   }
 
   return (
@@ -73,17 +79,22 @@ function App() {
                   )
                 })
               }
-              {/* <label htmlFor="userName">Pseudonym <span>How would you like to be credited?</span></label>
-              <input type="text" id="userName" /> */}
+              <label htmlFor="userName">Pseudonym <span>How would you like to be credited?</span></label>
+              <input 
+                type="text" 
+                id="userName"  
+                onChange={handleAuthor}
+                required
+              />
             </ul>
 
-            {/* disable button until all fields filled */}
             <button>Get Mad-Lib</button>
           </form>
 
           <Template
             title={madLibTitle}
             madLib={madLibResult}
+            author={author}
           />
         </div>
       </main>
