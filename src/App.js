@@ -11,6 +11,8 @@ function App() {
   const [userInput, setUserInput] = useState('');
   const [wordList, setWordList] = useState([]);
   // const [author, setAuthor] = useState('');
+  const [madLibResult, setMadLibResult] = useState('');
+
 
 
   useEffect(() => {
@@ -31,31 +33,23 @@ function App() {
 
     setWordList([...wordList, userInput])
 
-
-    const userRes = [];
-    userRes.push(wordList)
+    // const userRes = [];
+    // userRes.push(wordList)
 
     let combinedArray = [];
     for (let i = 0; i < madLibTemplate.length; i++) {
       combinedArray.push(madLibTemplate[i]);
       combinedArray.push(wordList[i]);
     }
-    combinedArray.pop();
-    console.log(combinedArray);
 
-    const madLibResult = combinedArray.join("");
-    console.log(madLibResult);
+    const madLibString = combinedArray.join('');
+    console.log(madLibString);
 
-
-
-    return (
-      <Template
-        madLib={madLibResult}
-        title={madLibTitle}
-      />
-    )
+    setMadLibResult(madLibString);
 
   }
+
+  
 
   const handleChange = e => {
     setUserInput(e.target.value);
@@ -63,28 +57,42 @@ function App() {
 
   return (
     <div className="App">
-      <h1>Mad-Libs!</h1>
-      <form onSubmit={handleSubmit}>
-        <ul>
-          {
-            madLibBlanks.map((blank, index) => {
-              return (
-                <FormInput
-                  key={index}
-                  prompt={blank}
-                  change={handleChange}
-                // value={userInput}
-                />
-              )
-            })
-          }
-          <label htmlFor="userName">Pseudonym <span>How would you like to be credited?</span></label>
-          <input type="text" id="userName" />
-        </ul>
+      <header>
+        <h1>Mad-Libs!</h1>
+      </header>
+      <main>
+        <div className="wrapper"> 
+          <form onSubmit={handleSubmit}>
+            <ul>
+              {
+                madLibBlanks.map((blank, index) => {
+                  return (
+                    <FormInput
+                      key={index}
+                      prompt={blank}
+                      change={handleChange}
+                    // value={userInput}
+                    />
+                  )
+                })
+              }
+              {/* <label htmlFor="userName">Pseudonym <span>How would you like to be credited?</span></label>
+              <input type="text" id="userName" /> */}
+            </ul>
 
-        {/* disable button until all fields filled */}
-        <button>Get Mad-Lib</button>
-      </form>
+            {/* disable button until all fields filled */}
+            <button>Get Mad-Lib</button>
+          </form>
+
+          <Template
+            title={madLibTitle}
+            madLib={madLibResult}
+          />
+        </div>
+      </main>
+      <footer>
+        <p>Made by Cal Akler at <a href="https://junocollege.com/">Juno College</a>, 2021. Data courtesy of the <a href="https://madlibz.herokuapp.com/api">Madlibz API</a>.</p>
+      </footer>
     </div>
   )
 }
