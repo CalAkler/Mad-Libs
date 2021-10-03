@@ -2,13 +2,13 @@ const FormInput = (props) => {
 
   return (
     <li>
-      <label htmlFor={`${props.prompt}UserInput`}>{props.prompt}</label>
+      <label htmlFor={`${props.value}UserInput`}>{props.prompt}</label>
       <input 
         type="text" 
-        id={`${props.prompt}UserInput`}
+        id={`${props.value}UserInput`}
         onChange={props.change}
         value={props.value} 
-        // required
+        required={props.required}
       />
     </li>
   )

@@ -5,13 +5,13 @@ import { useEffect, useState } from 'react';
 
 
 function App() {
-  const [madLibBlanks, setMadLibBlanks] = useState([]);
   const [madLibTemplate, setMadLibTemplate] = useState([]);
   const [madLibTitle, setMadLibTitle] = useState('');
-  const [userInput, setUserInput] = useState('');
-  const [wordList, setWordList] = useState([]);
-  // const [author, setAuthor] = useState('');
   const [madLibResult, setMadLibResult] = useState('');
+  const [inputList, setInputList] = useState([{ 
+    prompt: "", 
+    value: "" 
+  }]);
 
 
 
@@ -19,10 +19,11 @@ function App() {
     fetch(`http://madlibz.herokuapp.com/api/random?minlength=10&maxlength=14`)
       .then(res => res.json())
       .then(jsonRes => {
-        setMadLibBlanks(jsonRes.blanks);
+        setInputList(jsonRes.blanks.map((blank) => {
+          return {prompt: blank, value: ""};
+        }));
         setMadLibTemplate(jsonRes.value);
         setMadLibTitle(jsonRes.title);
-        console.log(jsonRes);
       })
   }, []);
 
@@ -31,28 +32,23 @@ function App() {
 
     // firebase code if time
 
-    setWordList([...wordList, userInput])
-
-    // const userRes = [];
-    // userRes.push(wordList)
-
     let combinedArray = [];
-    for (let i = 0; i < madLibTemplate.length; i++) {
+    for (let i = 0; i < madLibTemplate.length - 1; i++) {
       combinedArray.push(madLibTemplate[i]);
-      combinedArray.push(wordList[i]);
+      const word = inputList[i] ? inputList[i].value : "";
+      combinedArray.push(word);
     }
 
     const madLibString = combinedArray.join('');
-    console.log(madLibString);
-
     setMadLibResult(madLibString);
-
   }
 
   
 
-  const handleChange = e => {
-    setUserInput(e.target.value);
+  const handleChange = (e, index) => {
+    const updatedInputList = [...inputList];
+    updatedInputList[index].value = e.target.value;
+    setInputList(updatedInputList);
   }
 
   return (
@@ -65,13 +61,14 @@ function App() {
           <form onSubmit={handleSubmit}>
             <ul>
               {
-                madLibBlanks.map((blank, index) => {
+                inputList.map((input, index) => {
                   return (
                     <FormInput
                       key={index}
-                      prompt={blank}
-                      change={handleChange}
-                    // value={userInput}
+                      prompt={input.prompt}
+                      change={(e) => {handleChange(e, index)}}
+                      value={input.value}
+                      required
                     />
                   )
                 })
