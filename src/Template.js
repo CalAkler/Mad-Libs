@@ -4,6 +4,7 @@ const Template = (props) => {
      <h3>{props.title}</h3>
      <h4>by {props.author}</h4>
      <p>{props.madLib}</p>
+     <button className="delete">X</button>
    </div>
   )
 }

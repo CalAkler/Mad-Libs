@@ -1,26 +1,28 @@
 import './App.css';
 import FormInput from './FormInput';
 import Template from './Template';
-import { useEffect, useState } from 'react';
+import DatabaseResult from './DatabaseResult';
+import { useEffect, useState, Fragment } from 'react';
 import { ref, onValue, push, remove } from 'firebase/database';
 import database from './firebase';
-
 
 function App() {
   const [madLibTemplate, setMadLibTemplate] = useState([]);
   const [madLibTitle, setMadLibTitle] = useState('');
   const [madLibResult, setMadLibResult] = useState('');
   const [author, setAuthor] = useState('');
+  const [previousMadLibs, setPreviousMadLibs] = useState([]);
   const [inputList, setInputList] = useState([{ 
     prompt: "", 
     value: "" 
   }]);
 
+
   useEffect(() => {
-    fetch(`http://madlibz.herokuapp.com/api/random?minlength=10&maxlength=14`)
+    fetch(`http://madlibz.herokuapp.com/api/random?minlength=10&maxlength=16`)
       .then(res => res.json())
       .then(jsonRes => {
-        setInputList(jsonRes.blanks.map(blank => {
+        setInputList(jsonRes.blanks.map((blank) => {
           return {prompt: blank, value: ""};
         }));
         setMadLibTemplate(jsonRes.value);
@@ -33,12 +35,18 @@ function App() {
       const dbData = snapshot.val();
       const newArray = [];
 
-      
-
-      
+      for (let propertyName in dbData) {
+        const storedMadLibs = {
+          key: propertyName,
+          title: dbData[propertyName].title,
+          author: dbData[propertyName].author,
+          madLib: dbData[propertyName].story
+        }
+        newArray.push(storedMadLibs);
+      }      
+      setPreviousMadLibs(newArray);
     })
   }, []);
-
 
   const handleSubmit = e => {
     e.preventDefault();
@@ -55,7 +63,12 @@ function App() {
 
     // push to firebase
     const dbRef = ref(database);
-    push(dbRef, madLibResult);
+    const madLibData = {
+      title: madLibTitle,
+      author: `by ${author}`,
+      story: madLibString 
+    }
+    push(dbRef, madLibData);
   }
 
   const handleChange = (e, index) => {
@@ -67,6 +80,7 @@ function App() {
   const handleAuthor = (e) => {
     setAuthor(e.target.value)
   }
+
 
   return (
     <div className="App">
@@ -98,14 +112,38 @@ function App() {
                 required
               />
             </ul>
+
             <button>Get Mad-Lib</button>
           </form>
 
           <Template
             title={madLibTitle}
-            madLib={madLibResult}
             author={author}
+            madLib={madLibResult}
           />
+
+          {
+            previousMadLibs.map((madLib, index) => {
+              return (
+                <Fragment
+                  key={madLib.key}
+                >
+                  { 
+                    previousMadLibs.length !== index + 1 ?
+                      <DatabaseResult 
+                        title={madLib.title}
+                        author={madLib.author}
+                        madLib={madLib.madLib}
+                      />
+                    : null
+                  }
+                </Fragment>
+              )
+            })
+          }
+          {
+          
+          }
         </div>
       </main>
       <footer>
