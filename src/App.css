@@ -17,7 +17,7 @@ html { -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: 
   margin: 0 auto;
 }
 
-h1 {
+h1, h3, h4 {
   text-align: center;
 }
 
@@ -58,6 +58,21 @@ input {
 span {
   display: block;
 }
+
+
+/* result */
+
+.template {
+  border: 2px solid green;
+
+}
+
+.template p {
+  padding: 0 15px 5px 15px;
+}
+
+
+
 
 footer {
   text-align: center;

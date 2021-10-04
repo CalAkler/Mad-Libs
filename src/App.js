@@ -12,9 +12,9 @@ function App() {
   const [madLibResult, setMadLibResult] = useState('');
   const [author, setAuthor] = useState('');
   const [previousMadLibs, setPreviousMadLibs] = useState([]);
-  const [inputList, setInputList] = useState([{ 
-    prompt: "", 
-    value: "" 
+  const [inputList, setInputList] = useState([{
+    prompt: "",
+    value: ""
   }]);
 
 
@@ -23,14 +23,14 @@ function App() {
       .then(res => res.json())
       .then(jsonRes => {
         setInputList(jsonRes.blanks.map((blank) => {
-          return {prompt: blank, value: ""};
+          return { prompt: blank, value: "" };
         }));
         setMadLibTemplate(jsonRes.value);
         setMadLibTitle(jsonRes.title);
       })
 
     const dbRef = ref(database);
-    
+
     onValue(dbRef, snapshot => {
       const dbData = snapshot.val();
       const newArray = [];
@@ -43,7 +43,7 @@ function App() {
           madLib: dbData[propertyName].story
         }
         newArray.push(storedMadLibs);
-      }      
+      }
       setPreviousMadLibs(newArray);
     })
   }, []);
@@ -66,7 +66,7 @@ function App() {
     const madLibData = {
       title: madLibTitle,
       author: `by ${author}`,
-      story: madLibString 
+      story: madLibString
     }
     push(dbRef, madLibData);
   }
@@ -81,6 +81,10 @@ function App() {
     setAuthor(e.target.value)
   }
 
+  const handleDelete = (keyOfEntry) => {
+    const specificNodeRef = ref(database, keyOfEntry);
+    remove(specificNodeRef);
+  }
 
   return (
     <div className="App">
@@ -88,7 +92,7 @@ function App() {
         <h1>Mad-Libs!</h1>
       </header>
       <main>
-        <div className="wrapper"> 
+        <div className="wrapper">
           <form onSubmit={handleSubmit}>
             <ul>
               {
@@ -97,7 +101,7 @@ function App() {
                     <FormInput
                       key={index}
                       prompt={input.prompt}
-                      change={(e) => {handleChange(e, index)}}
+                      change={(e) => { handleChange(e, index) }}
                       value={input.value}
                       required
                     />
@@ -105,9 +109,9 @@ function App() {
                 })
               }
               <label htmlFor="userName">Pseudonym <span>How would you like to be credited?</span></label>
-              <input 
-                type="text" 
-                id="userName"  
+              <input
+                type="text"
+                id="userName"
                 onChange={handleAuthor}
                 required
               />
@@ -128,21 +132,23 @@ function App() {
                 <Fragment
                   key={madLib.key}
                 >
-                  { 
+                  {
                     previousMadLibs.length !== index + 1 ?
-                      <DatabaseResult 
+                      <DatabaseResult
                         title={madLib.title}
                         author={madLib.author}
                         madLib={madLib.madLib}
+                        item={madLib.key}
+                        delete={() => handleDelete(madLib.key)}
                       />
-                    : null
+                      : null
                   }
                 </Fragment>
               )
             })
           }
           {
-          
+
           }
         </div>
       </main>
