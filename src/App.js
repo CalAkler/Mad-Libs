@@ -97,10 +97,11 @@ function App() {
   return (
     <div className="App">
       <header>
-        <h1>Mad-Libs!</h1>
+        <h1 className="text-reflect">Mad-Libs!</h1>
       </header>
       <main>
         <div className="wrapper">
+          <p className="instructions">Fill out the form to create your own mad-lib!</p>
           <form onSubmit={handleSubmit}>
             <ul>
               {
@@ -116,7 +117,7 @@ function App() {
                   )
                 })
               }
-              <label htmlFor="userName">Pseudonym <span>How would you like to be credited?</span></label>
+              <label htmlFor="userName">Pseudonym: <span>how would you like to be credited?</span></label>
               <input
                 type="text"
                 id="userName"
@@ -124,7 +125,7 @@ function App() {
                 required
               />
             </ul>
-            <button>Get Mad-Lib</button>
+            <button className="madLibsButton">Get Mad-Lib</button>
           </form>
           <Template
             title={madLibTitle}
@@ -153,7 +154,8 @@ function App() {
         </div>
       </main>
       <footer>
-        <p>Made by Cal Akler at <a href="https://junocollege.com/">Juno College</a>, 2021. Data courtesy of the <a href="https://madlibz.herokuapp.com/api">Madlibz API</a>.</p>
+        <p>Made by Cal Akler at <a href="https://junocollege.com/">Juno College</a>, 2021.</p> 
+        <p>Data courtesy of the <a href="https://madlibz.herokuapp.com/api">Madlibz API</a>.</p>
       </footer>
     </div>
   )
