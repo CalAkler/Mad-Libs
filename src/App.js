@@ -7,6 +7,7 @@ import { ref, onValue, push, remove } from 'firebase/database';
 import database from './firebase';
 
 function App() {
+  // define state variables
   const [madLibTemplate, setMadLibTemplate] = useState([]);
   const [madLibTitle, setMadLibTitle] = useState('');
   const [madLibResult, setMadLibResult] = useState('');
@@ -17,11 +18,12 @@ function App() {
     value: ""
   }]);
 
-
+  // function to call api
   useEffect(() => {
     fetch(`http://madlibz.herokuapp.com/api/random?minlength=10&maxlength=16`)
       .then(res => res.json())
       .then(jsonRes => {
+        // store all mad-lib data in state  
         setInputList(jsonRes.blanks.map((blank) => {
           return { prompt: blank, value: "" };
         }));
@@ -29,6 +31,7 @@ function App() {
         setMadLibTitle(jsonRes.title);
       })
 
+    // setup subscription to firebase database
     const dbRef = ref(database);
 
     onValue(dbRef, snapshot => {
@@ -146,9 +149,6 @@ function App() {
                 </Fragment>
               )
             })
-          }
-          {
-
           }
         </div>
       </main>
