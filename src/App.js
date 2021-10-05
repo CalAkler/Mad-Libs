@@ -31,7 +31,7 @@ function App() {
         setMadLibTitle(jsonRes.title);
       })
 
-    // setup subscription to firebase database
+    // setup subscription to firebase database and store result in state
     const dbRef = ref(database);
 
     onValue(dbRef, snapshot => {
@@ -51,12 +51,13 @@ function App() {
     })
   }, []);
 
+  // function to create final madlib result string from user-submitted array and original api value array, then store result in state
   const handleSubmit = e => {
     e.preventDefault();
-
     let combinedArray = [];
     for (let i = 0; i < madLibTemplate.length - 1; i++) {
       combinedArray.push(madLibTemplate[i]);
+      // since inputList will always have one less item than madLibTemplate, check if inputList[i] exists, then push to combinedArray
       const word = inputList[i] ? inputList[i].value : "";
       combinedArray.push(word);
     }
@@ -74,21 +75,25 @@ function App() {
     push(dbRef, madLibData);
   }
 
+  // function to listen for user input changes and update inputList value
   const handleChange = (e, index) => {
     const updatedInputList = [...inputList];
     updatedInputList[index].value = e.target.value;
     setInputList(updatedInputList);
   }
 
+  // listen for user input change and store in state
   const handleAuthor = (e) => {
     setAuthor(e.target.value)
   }
 
+  // function to delete entry from database (and page)
   const handleDelete = (keyOfEntry) => {
     const specificNodeRef = ref(database, keyOfEntry);
     remove(specificNodeRef);
   }
 
+  // render JSX
   return (
     <div className="App">
       <header>
@@ -119,23 +124,18 @@ function App() {
                 required
               />
             </ul>
-
             <button>Get Mad-Lib</button>
           </form>
-
           <Template
             title={madLibTitle}
             author={author}
             madLib={madLibResult}
           />
-
           {
             previousMadLibs.map((madLib, index) => {
               return (
-                <Fragment
-                  key={madLib.key}
-                >
-                  {
+                <Fragment key={madLib.key}>
+                  { // don't want to re-render new entry from db since it's already on the page
                     previousMadLibs.length !== index + 1 ?
                       <DatabaseResult
                         title={madLib.title}
@@ -144,7 +144,7 @@ function App() {
                         item={madLib.key}
                         delete={() => handleDelete(madLib.key)}
                       />
-                      : null
+                    : null
                   }
                 </Fragment>
               )

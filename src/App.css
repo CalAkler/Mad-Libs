@@ -7,7 +7,7 @@ html { -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: 
 
 /* General */
 
-.App {
+html {
   font-size: 125%;
 }
 

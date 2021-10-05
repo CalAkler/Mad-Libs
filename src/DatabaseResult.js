@@ -1,5 +1,4 @@
 const DatabaseResult = (props) => {
-
   return (
     <div className="databaseResult">
       <h3>{props.title}</h3>

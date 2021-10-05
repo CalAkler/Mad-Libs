@@ -1,5 +1,4 @@
 const FormInput = (props) => {
-
   return (
     <li>
       <label htmlFor={`${props.value}UserInput`}>{props.prompt}</label>
