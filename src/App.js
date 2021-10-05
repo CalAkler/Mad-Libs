@@ -20,7 +20,7 @@ function App() {
 
   // function to call api
   useEffect(() => {
-    fetch(`http://madlibz.herokuapp.com/api/random?minlength=10&maxlength=16`)
+    fetch(`https://madlibz.herokuapp.com/api/random?minlength=10&maxlength=16`)
       .then(res => res.json())
       .then(jsonRes => {
         // store all mad-lib data in state  
