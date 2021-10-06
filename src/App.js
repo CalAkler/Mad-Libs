@@ -130,7 +130,7 @@ function App() {
             author={author}
             madLib={madLibResult}
           />
-          <p className="instructions">Not happy with your result? Submit another, then scroll down to the bottom and you can delete it!</p>
+          <p className="instructions">Not happy with your result? Refresh to submit another, then scroll down to the bottom and you can delete it!</p>
           {
             previousMadLibs.map((madLib, index) => {
               return (
