@@ -1,8 +1,8 @@
 const DatabaseResult = (props) => {
   return (
     <div className="databaseResult">
-      <h3>{props.title}</h3>
-      <h4>{props.author}</h4>
+      <h2>{props.title}</h2>
+      <h3>{props.author}</h3>
       <p>{props.madLib}</p>
       <button
         className="deleteButton"
