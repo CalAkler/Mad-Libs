@@ -66,6 +66,10 @@ h1 {
   100% { color: violet; border-color: violet; }
 }
 
+h3 {
+  word-wrap: break-word;
+}
+
 .wrapper {
   max-width: 1200px;
   width: 90%;
@@ -131,6 +135,7 @@ input {
 
 .template p, .databaseResult p {
   padding: 0 15px 5px 15px;
+  word-wrap: break-word;
 }
 
 .databaseResult {
