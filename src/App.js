@@ -23,32 +23,13 @@ function App() {
     fetch(`https://madlibz.herokuapp.com/api/random?minlength=10&maxlength=16`)
       .then(res => res.json())
       .then(jsonRes => {
-        // store all mad-lib data in state  
+        // store all mad-lib data in state variables  
         setInputList(jsonRes.blanks.map((blank) => {
           return { prompt: blank, value: "" };
         }));
         setMadLibTemplate(jsonRes.value);
         setMadLibTitle(jsonRes.title);
       })
-
-    // setup subscription to firebase database and store result in state
-    const dbRef = ref(database);
-
-    onValue(dbRef, snapshot => {
-      const dbData = snapshot.val();
-      const newArray = [];
-
-      for (let propertyName in dbData) {
-        const storedMadLibs = {
-          key: propertyName,
-          title: dbData[propertyName].title,
-          author: dbData[propertyName].author,
-          madLib: dbData[propertyName].story
-        }
-        newArray.push(storedMadLibs);
-      }
-      setPreviousMadLibs(newArray);
-    })
   }, []);
 
   // function to create final madlib result string from user-submitted array and original api value array, then store result in state
@@ -73,6 +54,23 @@ function App() {
       story: madLibString
     }
     push(dbRef, madLibData);
+
+    // setup subscription to firebase database and store result in state
+    onValue(dbRef, snapshot => {
+      const dbData = snapshot.val();
+      const newArray = [];
+
+      for (let propertyName in dbData) {
+        const storedMadLibs = {
+          key: propertyName,
+          title: dbData[propertyName].title,
+          author: dbData[propertyName].author,
+          madLib: dbData[propertyName].story
+        }
+        newArray.push(storedMadLibs);
+      }
+      setPreviousMadLibs(newArray);
+    })
   }
 
   // function to listen for user input changes and update inputList value
@@ -132,6 +130,7 @@ function App() {
             author={author}
             madLib={madLibResult}
           />
+          <p className="instructions">Not happy with your result? Submit another, then scroll down to the bottom and you can delete it!</p>
           {
             previousMadLibs.map((madLib, index) => {
               return (
@@ -145,7 +144,7 @@ function App() {
                         item={madLib.key}
                         delete={() => handleDelete(madLib.key)}
                       />
-                    : null
+                      : null
                   }
                 </Fragment>
               )
@@ -154,7 +153,7 @@ function App() {
         </div>
       </main>
       <footer>
-        <p>Made by Cal Akler at <a href="https://junocollege.com/">Juno College</a>, 2021.</p> 
+        <p>Made by Cal Akler at <a href="https://junocollege.com/">Juno College</a>, 2021.</p>
         <p>Data courtesy of the <a href="https://madlibz.herokuapp.com/api">Madlibz API</a>.</p>
       </footer>
     </div>
