@@ -1,4 +1,4 @@
-// MVP GOAL: Create a mad-libs app that takes user inputs to generate a short story, a few sentences long. Store result in database and display on page
+MVP GOAL: Create a mad-libs app that takes user inputs to generate a short story, a few sentences long. Store result in database and display on page
 
 // State items: 
   // [formSubmitted, setFormSubmitted] 
@@ -23,7 +23,7 @@
   // include a button to delete mad-lib from page and database
   // include another button to make a new mad-lib (refresh page)  
 
-// STRETCH GOALS:  
+STRETCH GOALS:  
   // integrate an api to display a relevant image based on a word or theme the user gave
     // tie it to a specific noun they submit
 

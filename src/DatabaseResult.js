@@ -1,3 +1,5 @@
+// renders previous stories from database onto page
+
 const DatabaseResult = (props) => {
   return (
     <div className="databaseResult">

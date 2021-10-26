@@ -1,3 +1,5 @@
+// renders completed story with user inputs inserted
+
 const Template = (props) => {
   return (
    <div className="template">

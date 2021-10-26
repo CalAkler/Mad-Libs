@@ -99,6 +99,11 @@ footer p {
   margin: 5px;
 }
 
+.userName { 
+  display: flex;
+  flex-direction: column;
+}
+
 
 /* FORM */
 form {

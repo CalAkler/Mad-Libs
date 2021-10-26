@@ -1,10 +1,14 @@
-import './App.css';
+// components
 import FormInput from './FormInput';
 import Template from './Template';
 import DatabaseResult from './DatabaseResult';
+// hooks
 import { useEffect, useState, Fragment } from 'react';
 import { ref, onValue, push, remove } from 'firebase/database';
+// firebase config
 import database from './firebase';
+// styles
+import './App.css';
 
 function App() {
   // define state variables
@@ -110,16 +114,20 @@ function App() {
                       prompt={input.prompt}
                       change={(e) => { handleChange(e, index) }}
                       value={input.value}
+                      for={input.value}
+                      id={input.value}
                       required
                     />
                   )
                 })
               }
-              <label htmlFor="userName">Pseudonym: <span>how would you like to be credited?</span></label>
-              <input
+              <FormInput
+                for="userName"
+                class="userName"
+                prompt={<>Pseudonym: <span>how would you like to be credited?</span></>}
                 type="text"
                 id="userName"
-                onChange={handleAuthor}
+                change={handleAuthor}
                 required
               />
             </ul>
