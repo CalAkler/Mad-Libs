@@ -18,7 +18,9 @@ const Instructions = () => {
         seePopUp ? (
           <div className="popUp">
             <h3>Wait, what's a mad-lib?</h3>
-            <p>Mad-libs are a classic word game where you're given a story template with several words missing. Prompts are given to create these words yourself before they're inserted into the story. The result is often nonsense, but always hilarious!</p>
+            <p>A classic word game in which you're given a story template with several words missing. </p>
+            <p>Prompts are given to create these words yourself before they're inserted into the story.</p>
+            <p>The result is often nonsense, but always hilarious!</p>
           </div>
         ) : null
       }
