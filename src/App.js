@@ -16,6 +16,7 @@ function App() {
   const [madLibTitle, setMadLibTitle] = useState('');
   const [madLibResult, setMadLibResult] = useState('');
   const [author, setAuthor] = useState('');
+  const [serverDown, setServerDown] = useState(false);
   const [previousMadLibs, setPreviousMadLibs] = useState([]);
   const [inputList, setInputList] = useState([{
     prompt: "",
@@ -25,14 +26,22 @@ function App() {
   // function to call api
   useEffect(() => {
     fetch(`https://madlibz.herokuapp.com/api/random?minlength=10&maxlength=16`)
-      .then(res => res.json())
-      .then(jsonRes => {
-        // store all mad-lib data in state variables  
-        setInputList(jsonRes.blanks.map((blank) => {
-          return { prompt: blank, value: "" };
-        }));
-        setMadLibTemplate(jsonRes.value);
-        setMadLibTitle(jsonRes.title);
+      .then(res => {
+        if (res.statusText === "OK") {
+          return res.json()
+            .then(jsonRes => {
+              // store all mad-lib data in state variables  
+              setInputList(jsonRes.blanks.map((blank) => {
+                return { prompt: blank, value: "" };
+              }));
+              setMadLibTemplate(jsonRes.value);
+              setMadLibTitle(jsonRes.title);
+            })
+        } else {
+          throw new Error();
+        }
+      }).catch(() => {
+        setServerDown(true);
       })
   }, []);
 
@@ -99,66 +108,72 @@ function App() {
   return (
     <div className="App">
       <header>
-        <h1 className="text-reflect">Mad-Libs!</h1>
+        <h1>Mad-Libs!</h1>
       </header>
       <main>
-        <div className="wrapper">
-          <p className="instructions">Fill out the form to create your own mad-lib!</p>
-          <form onSubmit={handleSubmit}>
-            <ul>
+        {
+          serverDown ? (
+            <h2 className="instructions">We're having trouble accessing the server at the moment. Please try again later! 😵</h2>
+          ) : (
+            <div className="wrapper">
+              <p className="instructions">Fill out the form to create your own mad-lib!</p>
+              <form onSubmit={handleSubmit}>
+                <ul>
+                  {
+                    inputList.map((input, index) => {
+                      return (
+                        <FormInput
+                          key={index}
+                          prompt={input.prompt}
+                          change={(e) => { handleChange(e, index) }}
+                          value={input.value}
+                          for={input.value}
+                          id={input.value}
+                          required
+                        />
+                      )
+                    })
+                  }
+                  <FormInput
+                    for="userName"
+                    class="userName"
+                    prompt={<>Pseudonym: <span>how would you like to be credited?</span></>}
+                    type="text"
+                    id="userName"
+                    change={handleAuthor}
+                    required
+                  />
+                </ul>
+                <button className="madLibsButton">Get Mad-Lib</button>
+              </form>
+              <Template
+                title={madLibTitle}
+                author={author}
+                madLib={madLibResult}
+              />
+              <p className="instructions">Not happy with your result? Refresh to submit another, then scroll down to the bottom and you can delete it!</p>
               {
-                inputList.map((input, index) => {
+                previousMadLibs.map((madLib, index) => {
                   return (
-                    <FormInput
-                      key={index}
-                      prompt={input.prompt}
-                      change={(e) => { handleChange(e, index) }}
-                      value={input.value}
-                      for={input.value}
-                      id={input.value}
-                      required
-                    />
+                    <Fragment key={madLib.key}>
+                      { // don't want to re-render new entry from db since it's already on the page
+                        previousMadLibs.length !== index + 1 ?
+                          <DatabaseResult
+                            title={madLib.title}
+                            author={madLib.author}
+                            madLib={madLib.madLib}
+                            item={madLib.key}
+                            delete={() => handleDelete(madLib.key)}
+                          />
+                          : null
+                      }
+                    </Fragment>
                   )
                 })
               }
-              <FormInput
-                for="userName"
-                class="userName"
-                prompt={<>Pseudonym: <span>how would you like to be credited?</span></>}
-                type="text"
-                id="userName"
-                change={handleAuthor}
-                required
-              />
-            </ul>
-            <button className="madLibsButton">Get Mad-Lib</button>
-          </form>
-          <Template
-            title={madLibTitle}
-            author={author}
-            madLib={madLibResult}
-          />
-          <p className="instructions">Not happy with your result? Refresh to submit another, then scroll down to the bottom and you can delete it!</p>
-          {
-            previousMadLibs.map((madLib, index) => {
-              return (
-                <Fragment key={madLib.key}>
-                  { // don't want to re-render new entry from db since it's already on the page
-                    previousMadLibs.length !== index + 1 ?
-                      <DatabaseResult
-                        title={madLib.title}
-                        author={madLib.author}
-                        madLib={madLib.madLib}
-                        item={madLib.key}
-                        delete={() => handleDelete(madLib.key)}
-                      />
-                      : null
-                  }
-                </Fragment>
-              )
-            })
-          }
-        </div>
+            </div>
+          )
+        }
       </main>
       <footer>
         <p>Made by Cal Akler at <a href="https://junocollege.com/">Juno College</a>, 2021.</p>
