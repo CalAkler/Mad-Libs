@@ -121,7 +121,6 @@ input {
   border-bottom: 2px solid black;
   margin: 0 0 20px 15px;
   background: papayawhip;
-  width: 91%;
 }
 
 .madLibsButton {
@@ -172,8 +171,4 @@ input {
   form li {
     display: flex;
   }
-
-  /* forminput {
-    width: 91%;
-  } */
 }
