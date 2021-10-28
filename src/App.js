@@ -1,7 +1,8 @@
 // components
-import FormInput from './FormInput';
-import Template from './Template';
-import DatabaseResult from './DatabaseResult';
+import FormInput from './components/FormInput';
+import Template from './components/Template';
+import DatabaseResult from './components/DatabaseResult';
+import Instructions from './components/Instructions';
 // hooks
 import { useEffect, useState, Fragment } from 'react';
 import { ref, onValue, push, remove } from 'firebase/database';
@@ -116,7 +117,7 @@ function App() {
             <h2 className="instructions">We're having trouble accessing the server at the moment. Please try again later! 😵</h2>
           ) : (
             <div className="wrapper">
-              <p className="instructions">Fill out the form to create your own mad-lib!</p>
+              <Instructions />
               <form onSubmit={handleSubmit}>
                 <ul>
                   {

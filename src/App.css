@@ -104,6 +104,40 @@ footer p {
   flex-direction: column;
 }
 
+.help {
+  cursor: help;
+  color: yellow;
+  padding-left: 5px;
+  /* position: relative; */
+}
+
+.popUp {
+  font-family: 'Roboto', sans-serif;
+  color: white;
+  border: 8px solid blue;
+  background: black;
+  width: 300px;
+  height: 400px;
+  padding: 10px 15px 0;
+  position: absolute;
+  right: 5%;
+  top: 10%;
+
+  z-index: 10;
+}
+
+.popUp h3 {
+  font-size: 1.2rem;
+  padding: 0;
+  margin: 0;
+  text-align: left;
+}
+
+.popUp p {
+  font-size: 1.1rem;
+  /* padding-top: 6px; */
+}
+
 
 /* FORM */
 form {
